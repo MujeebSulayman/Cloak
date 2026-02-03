@@ -33,8 +33,8 @@ export const dbGet = async (key: string): Promise<string | null> => {
     const value = await db.get(key);
     return value;
   } catch (error: any) {
-    console.log('DB get error:', error.code, error.type, error.notFound, error.message);
     if (error.notFound || error.code === 'LEVEL_NOT_FOUND') return null;
+    console.error('DB get error:', error.message ?? error);
     throw error;
   }
 };

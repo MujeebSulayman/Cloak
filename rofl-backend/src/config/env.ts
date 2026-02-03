@@ -12,4 +12,6 @@ export const env = {
     // Alchemy Webhook
     ALCHEMY_SIGNING_KEY: process.env.ALCHEMY_SIGNING_KEY || '',
     VOID_CONTRACT_ADDRESS: process.env.VOID_CONTRACT_ADDRESS || '0x4aE649044CC818A00fA20266aE5d5b77E79089C3',
+    // Optional: Base Sepolia RPC (Alchemy/Infura). Enables balance backfill and avoids public RPC 503.
+    BASE_SEPOLIA_RPC_URL: process.env.BASE_SEPOLIA_RPC_URL || '',
 } as const;

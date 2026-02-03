@@ -3,13 +3,17 @@ import { env } from '../config/env';
 import { setBalance, getBalance, updateBalance } from './balance.service';
 import { addTransaction } from './transaction.service';
 import { hasBalanceSecret } from './secret.service';
-import { decodeEventLog, createPublicClient, http, erc20Abi } from 'viem';
+import { decodeEventLog, createPublicClient, http, erc20Abi, parseAbiItem } from 'viem';
 import { baseSepolia } from 'viem/chains';
 
-// Public client for reading token decimals
+// RPC: use env if set (Alchemy/Infura); fallback for when env RPC fails (e.g. Base Sepolia not enabled)
 const publicClient = createPublicClient({
   chain: baseSepolia,
-  transport: http()
+  transport: http(env.BASE_SEPOLIA_RPC_URL || undefined),
+});
+const fallbackClient = createPublicClient({
+  chain: baseSepolia,
+  transport: http(),
 });
 
 // Deposited event ABI
@@ -130,12 +134,77 @@ const processLog = async (log: any): Promise<void> => {
     // Update balance
     await updateBalance(user, tokenAddress, newBalance);
 
-    // Add to transaction history
-    await addTransaction(env.VOID_CONTRACT_ADDRESS, user, tokenAddress, amountDecimal.toString());
+    // Transaction history: contract has no tx secret so addTransaction would throw; skip for deposits
+    try {
+      await addTransaction(env.VOID_CONTRACT_ADDRESS, user, tokenAddress, amountDecimal.toString());
+    } catch (txErr) {
+      console.warn('Deposit: could not add to tx history (contract has no tx secret):', txErr);
+    }
 
     console.log(`Deposit processed: ${user} now has ${newBalance} of ${tokenAddress}`);
   } catch (error) {
     console.error('Error processing deposit event:', error);
     throw error;
   }
+};
+
+// --- Balance backfill (deposits made before user set balance secret) ---
+const BACKFILL_BLOCK_RANGE = 400_000n;
+const GETLOGS_CHUNK = 2_000n;
+
+type DepositLogArgs = { args: { amount: bigint; tokenAddress: string } };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const runBackfillWithClient = async (wallet: string, client: any): Promise<boolean> => {
+  try {
+    const contractAddress = env.VOID_CONTRACT_ADDRESS as `0x${string}`;
+    const event = parseAbiItem('event Deposited(address indexed user, uint256 amount, address tokenAddress)');
+    const args = { user: wallet as `0x${string}` };
+
+    const currentBlock = await client.getBlockNumber();
+    const fromBlock = currentBlock > BACKFILL_BLOCK_RANGE ? currentBlock - BACKFILL_BLOCK_RANGE : 0n;
+
+    const allLogs: DepositLogArgs[] = [];
+    for (let start = fromBlock; start <= currentBlock; start += GETLOGS_CHUNK) {
+      const toBlock = start + GETLOGS_CHUNK - 1n > currentBlock ? currentBlock : start + GETLOGS_CHUNK - 1n;
+      const chunk = (await client.getLogs({
+        address: contractAddress,
+        event,
+        args,
+        fromBlock: start,
+        toBlock,
+      })) as DepositLogArgs[];
+      allLogs.push(...chunk);
+    }
+
+    if (allLogs.length === 0) return true;
+
+    const totalsByToken: Record<string, number> = {};
+    for (const log of allLogs) {
+      const { amount, tokenAddress } = log.args;
+      const token = (tokenAddress || '').toLowerCase();
+      const decimals = await client.readContract({
+        address: tokenAddress as `0x${string}`,
+        abi: erc20Abi,
+        functionName: 'decimals',
+      });
+      totalsByToken[token] = (totalsByToken[token] ?? 0) + Number(amount) / Math.pow(10, decimals);
+    }
+    for (const [token, total] of Object.entries(totalsByToken)) {
+      if (total > 0) await setBalance(wallet, token, total.toString());
+    }
+    if (Object.keys(totalsByToken).length > 0) {
+      console.log(`Backfill: ${wallet}`, totalsByToken);
+    }
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+/** Backfill balances from chain when user set secret after depositing. Call when GET /api/balance would return empty. */
+export const backfillDepositsForWallet = async (wallet: string): Promise<void> => {
+  if (!(await hasBalanceSecret(wallet))) return;
+  const ok = await runBackfillWithClient(wallet, publicClient) || await runBackfillWithClient(wallet, fallbackClient);
+  if (!ok) console.warn('Backfill: RPC failed (set BASE_SEPOLIA_RPC_URL with Base Sepolia enabled, or retry later).');
 };

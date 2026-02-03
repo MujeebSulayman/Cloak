@@ -20,9 +20,7 @@ export const getBalanceSecret = async (wallet: string): Promise<string | null> =
 
 export const setBalanceSecret = async (wallet: string, signature: string): Promise<string> => {
   const existing = await getBalanceSecret(wallet);
-  if (existing) {
-    throw new Error('Balance secret already set');
-  }
+  if (existing) return existing; // already set (e.g. re-onboarding) → success
 
   const secret = deriveSecret(signature);
   const key = `${BALANCE_SECRET_PREFIX}${wallet.toLowerCase()}`;
@@ -43,9 +41,7 @@ export const getTxSecret = async (wallet: string): Promise<string | null> => {
 
 export const setTxSecret = async (wallet: string, signature: string): Promise<string> => {
   const existing = await getTxSecret(wallet);
-  if (existing) {
-    throw new Error('Transaction secret already set');
-  }
+  if (existing) return existing; // already set → success
 
   const secret = deriveSecret(signature);
   const key = `${TX_SECRET_PREFIX}${wallet.toLowerCase()}`;

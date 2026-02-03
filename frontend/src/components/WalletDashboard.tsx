@@ -475,6 +475,26 @@ export function WalletDashboard({
     return assetsFromBackend.reduce((acc, asset) => acc + asset.value, 0);
   }, [assetsFromBackend]);
 
+  // Withdraw/Send: always show supported ERC20 tokens with backend balance (or 0) so list is never empty
+  const assetsForWithdrawSend = useMemo(() => {
+    return SUPPORTED_TOKENS.filter((t) => t.address).map((token) => {
+      const balance = backendBalances.find(
+        (b) => b.token?.toLowerCase() === token.address?.toLowerCase()
+      );
+      const amount = balance ? parseFloat(balance.balance) : 0;
+      const price = tokenPrices.get(token.address!.toLowerCase()) ?? 0;
+      const logo = tokenLogos.get(token.address!.toLowerCase());
+      return {
+        symbol: token.symbol,
+        name: token.name,
+        amount,
+        value: amount * price,
+        address: token.address,
+        logo,
+      };
+    });
+  }, [backendBalances, tokenPrices, tokenLogos]);
+
   // Memoized onSuccess callback for DepositDialog
   const handleDepositSuccess = useCallback(async () => {
     await Promise.all([refreshBalances(), refreshTransactions()]);
@@ -509,12 +529,12 @@ export function WalletDashboard({
 
         {/* Withdraw */}
         <WithdrawDialog
-          tokens={assetsFromBackend}
+          tokens={assetsForWithdrawSend}
           onSuccess={handleDepositSuccess}
         />
 
         <SendTokenDialog
-          tokens={assetsFromBackend}
+          tokens={assetsForWithdrawSend}
           onSuccess={handleDepositSuccess}
         />
 
@@ -541,8 +561,8 @@ export function WalletDashboard({
               key={tab.id}
               onClick={() => setActiveTab(tab.id as "tokens" | "history")}
               className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === tab.id
-                  ? "text-white"
-                  : "text-white/40 hover:text-white/60"
+                ? "text-white"
+                : "text-white/40 hover:text-white/60"
                 }`}
             >
               {tab.label}

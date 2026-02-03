@@ -19,7 +19,7 @@ export type TokenBalance = {
 };
 
 /**
- * Hook to automatically fetch ERC20 token balances from user's public wallet (Void Wallet)
+ * Hook to automatically fetch ERC20 token balances from user's public wallet (Cloak Wallet)
  * Uses Alchemy API to discover tokens in the public wallet address on Base Sepolia
  */
 export function usePublicWalletTokens() {

@@ -71,16 +71,16 @@ export function EmergencyExitDialog({
   // Get tokens from localStorage if not provided
   const tokensFromStorage = useMemo(() => {
     if (typeof window === "undefined") return [];
-    
+
     try {
       const cached = localStorage.getItem("VOID_WALLET_BALANCES");
       let balances: TokenBalance[] = [];
-      
+
       if (cached) {
         const cache = JSON.parse(cached);
         balances = cache.balances || [];
       }
-      
+
       // Create a map of supported token addresses for quick lookup
       const supportedTokensMap = new Map<string, typeof SUPPORTED_TOKENS[0]>();
       SUPPORTED_TOKENS.forEach((token) => {
@@ -92,12 +92,12 @@ export function EmergencyExitDialog({
           supportedTokensMap.set("0x0000000000000000000000000000000000000000", token);
         }
       });
-      
+
       // Extract tokens from proof's key or balance.token
       const tokenAssets = balances.map((balance) => {
         // Try to get tokenAddress from proof.key first, then from balance.token
         let tokenAddress = balance.token || "0x0000000000000000000000000000000000000000";
-        
+
         // Check if proof has tokenAddress in key or as a property
         if (balance.proof) {
           // If proof.key contains tokenAddress, extract it
@@ -115,18 +115,18 @@ export function EmergencyExitDialog({
             }
           }
         }
-        
+
         const tokenAddressLower = tokenAddress.toLowerCase();
         const isNative = tokenAddressLower === "0x0000000000000000000000000000000000000000";
-        
+
         // Find matching supported token
         const supportedToken = supportedTokensMap.get(tokenAddressLower);
-        
+
         const decimals = balance.decimals || supportedToken?.decimals || (isNative ? 18 : 6);
         const amount = parseFloat(balance.balance) || 0;
         const symbol = balance.symbol || supportedToken?.symbol || (isNative ? "ETH" : "UNKNOWN");
         const name = supportedToken?.name || balance.symbol || (isNative ? "Ether" : "Unknown Token");
-        
+
         return {
           address: tokenAddress,
           symbol: symbol,
@@ -136,7 +136,7 @@ export function EmergencyExitDialog({
           logo: undefined,
         } as Asset;
       });
-      
+
       // If no balances in localStorage, add mock USDC
       if (tokenAssets.length === 0) {
         const usdcToken = SUPPORTED_TOKENS.find(t => t.address?.toLowerCase() === "0x036cbd53842c5426634e7929541ec2318f3dcf7e");
@@ -151,7 +151,7 @@ export function EmergencyExitDialog({
           } as Asset];
         }
       }
-      
+
       return tokenAssets;
     } catch (error) {
       console.error("Failed to load tokens from localStorage:", error);
@@ -202,8 +202,7 @@ export function EmergencyExitDialog({
         // Accept proof even if siblings array is empty - the contract might handle it
         if (latestProof !== null) {
           console.log(
-            `✅ [Emergency Exit] Proof loaded successfully with ${
-              latestProof.siblings?.length || 0
+            `✅ [Emergency Exit] Proof loaded successfully with ${latestProof.siblings?.length || 0
             } siblings`
           );
           setProof(latestProof);
@@ -248,7 +247,7 @@ export function EmergencyExitDialog({
       setIsSigning(true);
       setError(null);
 
-      const message = "Void Wallet Balances Secret";
+      const message = "Cloak Wallet Balances Secret";
       const signedMessage = await signMessageAsync({ message });
 
       // Slice first 130 characters as per user's code
@@ -556,8 +555,8 @@ export function EmergencyExitDialog({
             {isWithdrawPending || isConfirming
               ? "Processing..."
               : isWithdrawSuccess
-              ? "Success!"
-              : "Emergency Withdraw"}
+                ? "Success!"
+                : "Emergency Withdraw"}
           </Button>
 
           {isWithdrawSuccess && (

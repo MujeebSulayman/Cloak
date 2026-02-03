@@ -69,11 +69,11 @@ const SUPPORTED_TOKENS: SupportedToken[] = [
   },
 ];
 
-// Void Contract Address on Base Sepolia
+// Cloak contract address on Base Sepolia (Void.sol deployment)
 const VOID_CONTRACT_ADDRESS = process.env
   .NEXT_PUBLIC_VOID_CONTRACT_ADDRESS as Address;
 
-// Void Contract ABI - sadece ihtiyacımız olan fonksiyonlar
+// Cloak contract ABI (Void.sol)
 const VOID_CONTRACT_ABI = [
   {
     inputs: [
@@ -222,9 +222,9 @@ export function WalletDashboard({
             };
           })
           .filter((t) => t.symbol) as Array<{
-          address: string;
-          symbol: string;
-        }>;
+            address: string;
+            symbol: string;
+          }>;
 
         if (tokensToFetch.length === 0) return;
 
@@ -540,11 +540,10 @@ export function WalletDashboard({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as "tokens" | "history")}
-              className={`pb-4 text-sm font-medium transition-colors relative ${
-                activeTab === tab.id
+              className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === tab.id
                   ? "text-white"
                   : "text-white/40 hover:text-white/60"
-              }`}
+                }`}
             >
               {tab.label}
               {activeTab === tab.id && (

@@ -86,7 +86,7 @@ export default function CompliancePage() {
 
       // If signature doesn't exist, create it first
       if (!signature) {
-        const message = "Void Wallet Transfers Secret";
+        const message = "Cloak Wallet Transfers Secret";
         const signedMessage = await signMessageAsync({ message });
         setSignature(signedMessage);
         setIsSigning(false);
@@ -96,7 +96,7 @@ export default function CompliancePage() {
         setIsSigning(false);
 
         try {
-          const message = "Void Wallet Transfers Secret";
+          const message = "Cloak Wallet Transfers Secret";
           const hashed_message = hashMessage(message);
 
           // Create values array - using threshold as base value
@@ -122,11 +122,11 @@ export default function CompliancePage() {
           // Create combined values for leaf hash - FIXED: Check if values is an array
           const combinedValuesArray = Array.isArray(values)
             ? values
-                .map((v) => {
-                  const hex = v.toString(16).padStart(64, "0");
-                  return Array.from(getBytes(`0x${hex}`));
-                })
-                .flat()
+              .map((v) => {
+                const hex = v.toString(16).padStart(64, "0");
+                return Array.from(getBytes(`0x${hex}`));
+              })
+              .flat()
             : [];
 
           const combinedValues = Uint8Array.from(combinedValuesArray);
@@ -224,8 +224,7 @@ export default function CompliancePage() {
     } catch (error) {
       console.error("Failed to verify proof:", error);
       alert(
-        `Verification failed: ${
-          error instanceof Error ? error.message : "Unknown error"
+        `Verification failed: ${error instanceof Error ? error.message : "Unknown error"
         }`
       );
       setVerificationResult(false);
@@ -249,7 +248,7 @@ export default function CompliancePage() {
       {/* Navbar */}
       <header className="flex items-center justify-between px-12 py-6 z-20 relative border-b border-white/10">
         <div className="flex items-center">
-          <div className="text-2xl font-bold tracking-wider">VOID WALLET</div>
+          <div className="text-2xl font-bold tracking-wider">CLOAK WALLET</div>
         </div>
         <div className="flex items-center gap-4">
           {isConnected ? (
@@ -431,8 +430,8 @@ export default function CompliancePage() {
                           ? "Generating..."
                           : "Signing..."
                         : signature
-                        ? "Generate Proof"
-                        : "Create Signature"}
+                          ? "Generate Proof"
+                          : "Create Signature"}
                     </span>
                     <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                   </Button>
@@ -555,11 +554,10 @@ export default function CompliancePage() {
                 {/* Verification Result */}
                 {verificationResult !== null && (
                   <div
-                    className={`p-3 rounded-none border ${
-                      verificationResult
+                    className={`p-3 rounded-none border ${verificationResult
                         ? "bg-green-500/10 border-green-500/30 text-green-400"
                         : "bg-red-500/10 border-red-500/30 text-red-400"
-                    }`}
+                      }`}
                   >
                     <div className="text-xs font-medium">
                       {verificationResult

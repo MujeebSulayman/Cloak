@@ -20,7 +20,7 @@ router.post('/set-tx-secret', jwtAuth, (req, res, next) => walletController.setT
 // Transfer (requires JWT and all secrets)
 router.post('/transfer', jwtAuth, requireAllSecrets, (req, res, next) => walletController.transfer(req, res, next));
 
-// Withdraw from VOID contract on Base Sepolia
+// Withdraw from Cloak contract on Base Sepolia
 router.post('/withdraw', jwtAuth, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { amount, token } = req.query;

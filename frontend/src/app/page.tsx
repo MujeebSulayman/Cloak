@@ -171,7 +171,7 @@ export default function Dashboard() {
 
   const walletData = {
     id: "1",
-    name: "Void Wallet",
+    name: "Cloak Wallet",
     address: address || "0x...",
     totalUsd: 0,
     assets: [],
@@ -184,7 +184,7 @@ export default function Dashboard() {
           <div className="flex justify-center items-center opacity-60">
             <Image
               src="/VoidWallet.svg"
-              alt="Void Wallet"
+              alt="Cloak Wallet"
               width={600}
               height={130}
               className="h-32 w-auto"
@@ -219,14 +219,13 @@ export default function Dashboard() {
       <section className="flex-1 flex flex-col relative bg-black">
         {/* Navbar / Top Section */}
         <header
-          className={`flex items-center justify-between px-12 z-20 relative ${
-            isTeeDead === true ? "pt-16" : "py-8"
-          }`}
+          className={`flex items-center justify-between px-12 z-20 relative ${isTeeDead === true ? "pt-16" : "py-8"
+            }`}
         >
           <div className="flex items-center">
             <Image
               src="/VoidWallet.svg"
-              alt="Void Wallet"
+              alt="Cloak Wallet"
               width={280}
               height={60}
               className="h-12 w-auto"
@@ -246,7 +245,7 @@ export default function Dashboard() {
                       symbol:
                         balance.symbol ||
                         (balance.token ===
-                        "0x0000000000000000000000000000000000000000"
+                          "0x0000000000000000000000000000000000000000"
                           ? "ETH"
                           : "UNKNOWN"),
                       name:
@@ -271,9 +270,8 @@ export default function Dashboard() {
         <div className="absolute top-0 left-0 w-full h-[500px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/5 via-black to-black pointer-events-none" />
 
         <div
-          className={`flex-1 px-12 max-w-5xl mx-auto w-full z-10 flex flex-col ${
-            !isSigned ? "pt-20" : ""
-          }`}
+          className={`flex-1 px-12 max-w-5xl mx-auto w-full z-10 flex flex-col ${!isSigned ? "pt-20" : ""
+            }`}
         >
           {isAppLoading ? (
             <div className="space-y-6 w-full">

@@ -6,7 +6,7 @@ import { WalletDashboard } from "@/components/WalletDashboard";
 
 const DEMO_ACCOUNT_DATA = {
   id: "demo-1",
-  name: "Void Wallet Demo - Base Sepolia",
+  name: "Cloak Wallet Demo - Base Sepolia",
   address: "0xD62E688A272f19e60E826f746bE26a41F2475A32",
   totalUsd: 2971.16,
   assets: [
@@ -49,7 +49,7 @@ export default function DemoDashboard() {
           <div className="flex items-center">
             <Image
               src="/VoidWallet.svg"
-              alt="Void Wallet"
+              alt="Cloak Wallet"
               width={280}
               height={60}
               className="h-12 w-auto"

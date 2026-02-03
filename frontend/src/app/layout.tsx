@@ -8,7 +8,7 @@ import ContextProvider from "@/context";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Void | Private Transactions",
+  title: "Cloak | Private Transactions",
   description: "Web3 TEE powered and compliant privacy transaction project",
 };
 

@@ -32,11 +32,11 @@ export const SUPPORTED_TOKENS: SupportedToken[] = [
   },
 ];
 
-// Void Contract Address on Base Sepolia
+// Cloak contract address on Base Sepolia (Void.sol deployment)
 export const VOID_CONTRACT_ADDRESS = process.env
   .NEXT_PUBLIC_VOID_CONTRACT_ADDRESS as Address;
 
-// Void Contract ABI - sadece ihtiyacımız olan fonksiyonlar
+// Cloak contract ABI (Void.sol)
 export const VOID_CONTRACT_ABI = [
   {
     inputs: [

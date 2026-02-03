@@ -133,7 +133,7 @@ export default function OnboardingPage() {
 
   const handlePart1Next = async () => {
     setIsShielding(true);
-    const message = "Void Wallet Balances Secret";
+    const message = "Cloak Wallet Balances Secret";
 
     try {
       const signature = await signMessageAsync({ message });
@@ -153,7 +153,7 @@ export default function OnboardingPage() {
 
   const handlePart2Next = async () => {
     setIsShieldingTx(true);
-    const message = "Void Wallet Transactions Secret";
+    const message = "Cloak Wallet Transactions Secret";
 
     try {
       const signature = await signMessageAsync({ message });
@@ -190,9 +190,8 @@ export default function OnboardingPage() {
             filter: activePart === 1 ? "blur(0px)" : "blur(2px)",
           }}
           transition={{ duration: 0.5 }}
-          className={`relative border border-white/10 bg-black/40 backdrop-blur-xl p-6 sm:p-8 rounded-3xl overflow-hidden ${
-            activePart !== 1 ? "pointer-events-none" : ""
-          }`}
+          className={`relative border border-white/10 bg-black/40 backdrop-blur-xl p-6 sm:p-8 rounded-3xl overflow-hidden ${activePart !== 1 ? "pointer-events-none" : ""
+            }`}
         >
           <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-50" />
 
@@ -295,10 +294,9 @@ export default function OnboardingPage() {
                 onClick={handlePart1Next}
                 disabled={isShielding || shielded}
                 className={`h-12 px-8 font-semibold text-sm rounded-full flex items-center gap-2 transition-all duration-300
-                  ${
-                    shielded
-                      ? "bg-emerald-500 text-white hover:bg-emerald-600"
-                      : "bg-white text-black hover:bg-zinc-200 hover:scale-105"
+                  ${shielded
+                    ? "bg-emerald-500 text-white hover:bg-emerald-600"
+                    : "bg-white text-black hover:bg-zinc-200 hover:scale-105"
                   }`}
               >
                 {shielded ? (
@@ -332,9 +330,8 @@ export default function OnboardingPage() {
             filter: activePart === 2 ? "blur(0px)" : "blur(2px)",
           }}
           transition={{ duration: 0.5 }}
-          className={`relative border border-white/10 bg-black/40 backdrop-blur-xl p-6 sm:p-8 rounded-3xl overflow-hidden col-start-1 lg:col-start-2 row-start-1 ${
-            activePart !== 2 ? "pointer-events-none" : ""
-          }`}
+          className={`relative border border-white/10 bg-black/40 backdrop-blur-xl p-6 sm:p-8 rounded-3xl overflow-hidden col-start-1 lg:col-start-2 row-start-1 ${activePart !== 2 ? "pointer-events-none" : ""
+            }`}
         >
           <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-50" />
 
@@ -425,10 +422,9 @@ export default function OnboardingPage() {
                 onClick={handlePart2Next}
                 disabled={isShieldingTx || shieldedTx}
                 className={`h-12 px-8 font-semibold text-sm rounded-full flex items-center gap-2 transition-all duration-300
-                  ${
-                    shieldedTx
-                      ? "bg-emerald-500 text-white hover:bg-emerald-600"
-                      : "bg-white text-black hover:bg-zinc-200 hover:scale-105"
+                  ${shieldedTx
+                    ? "bg-emerald-500 text-white hover:bg-emerald-600"
+                    : "bg-white text-black hover:bg-zinc-200 hover:scale-105"
                   }`}
               >
                 {shieldedTx ? (
@@ -443,7 +439,7 @@ export default function OnboardingPage() {
                   </>
                 ) : (
                   <>
-                    Enter Void
+                    Enter Cloak
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}

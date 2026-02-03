@@ -174,7 +174,7 @@ export function WithdrawDialog({
             Withdraw Funds
           </DialogTitle>
           <DialogDescription className="text-white/40 text-xs uppercase tracking-widest font-medium mt-2">
-            Withdraw assets from your Void Wallet
+            Withdraw assets from your Cloak Wallet
           </DialogDescription>
         </DialogHeader>
 
@@ -354,7 +354,7 @@ export function WithdrawDialog({
                         <span className="text-white font-medium">
                           {withdrawAmount} {selectedToken?.symbol}
                         </span>{" "}
-                        from your Void Wallet to your connected wallet.
+                        from your Cloak Wallet to your connected wallet.
                       </p>
                     </div>
 

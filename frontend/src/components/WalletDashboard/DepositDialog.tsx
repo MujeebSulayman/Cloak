@@ -246,7 +246,7 @@ export function DepositDialog({
             Deposit Funds
           </DialogTitle>
           <DialogDescription className="text-white/40 text-xs uppercase tracking-widest font-medium mt-2">
-            Add assets to your Void Wallet
+            Add assets to your Cloak Wallet
           </DialogDescription>
         </DialogHeader>
 
@@ -462,7 +462,7 @@ export function DepositDialog({
                         Approve {selectedToken?.symbol}
                       </h3>
                       <p className="text-sm text-white/50 max-w-[280px] mx-auto leading-relaxed">
-                        Allow the Void Wallet contract to spend your{" "}
+                        Allow the Cloak Wallet contract to spend your{" "}
                         <span className="text-white font-medium">
                           {depositAmount} {selectedToken?.symbol}
                         </span>
@@ -518,7 +518,7 @@ export function DepositDialog({
                         <span className="text-white font-medium">
                           {depositAmount} {selectedToken?.symbol}
                         </span>{" "}
-                        into your Void Wallet.
+                        into your Cloak Wallet.
                       </p>
                     </div>
 

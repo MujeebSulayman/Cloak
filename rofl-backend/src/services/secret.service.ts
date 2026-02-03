@@ -4,8 +4,8 @@ import { dbGet, dbPut } from './db.service';
 const BALANCE_SECRET_PREFIX = 'secret:balance:';
 const TX_SECRET_PREFIX = 'secret:tx:';
 
-export const BALANCE_SECRET_MESSAGE = 'Void Wallet Balances Secret';
-export const TX_SECRET_MESSAGE = 'Void Wallet Transactions Secret';
+export const BALANCE_SECRET_MESSAGE = 'Cloak Wallet Balances Secret';
+export const TX_SECRET_MESSAGE = 'Cloak Wallet Transactions Secret';
 
 // Derive secret from signature
 const deriveSecret = (signature: string): string => {

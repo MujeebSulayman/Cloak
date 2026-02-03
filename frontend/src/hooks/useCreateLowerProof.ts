@@ -118,7 +118,7 @@ async function test1_BasicProof() {
     const wallet = new Wallet(
       "0xa5fe4feee5a0017b0b9591523ff8c683794ce8ca9d3c3c4b661ddfb97e27bf57"
     );
-    const message = "Void Wallet Transactions Secret";
+    const message = "Cloak Wallet Transactions Secret";
     const hashed_message = hashMessage(message);
     const signature = await wallet.signMessage(message);
     const { x, y } = createWalletInformationForTransfer(

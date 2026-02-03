@@ -25,7 +25,7 @@ export class AuthService {
   generateMessage(address: string): string {
     const checksummedAddress = getAddress(address);
     const timestamp = Date.now();
-    return `Login Void Wallet Timestamp:${timestamp}`;
+    return `Login Cloak Wallet Timestamp:${timestamp}`;
   }
 
   async login(request: LoginRequest): Promise<LoginResponse> {

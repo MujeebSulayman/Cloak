@@ -22,6 +22,11 @@ export class WalletService {
     const validated = transferSchema.parse(body);
     const { sendTransaction, signature } = validated;
 
+    // Prevent self-transfers
+    if (sendTransaction.from.toLowerCase() === sendTransaction.to.toLowerCase()) {
+      throw new AppError('Cannot transfer to yourself', 400);
+    }
+
     // Verify signature
     const message = JSON.stringify(sendTransaction);
     const result = await verifyWalletSignature({

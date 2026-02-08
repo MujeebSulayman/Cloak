@@ -81,6 +81,12 @@ export function SendTokenDialog({
             return;
         }
 
+        // Prevent self-transfer
+        if (recipientAddress.toLowerCase() === address.toLowerCase()) {
+            setSendError("Cannot send to yourself");
+            return;
+        }
+
         setIsSending(true);
         setSendError(null);
         setSendSuccess(false);
@@ -121,6 +127,7 @@ export function SendTokenDialog({
 
     const parsedAmount = parseFloat(amount) || 0;
     const insufficient = (selectedToken?.amount ?? 0) < parsedAmount;
+    const isSelfTransfer = address && recipientAddress && recipientAddress.toLowerCase() === address.toLowerCase();
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -371,6 +378,11 @@ export function SendTokenDialog({
                                                         Insufficient balance
                                                     </div>
                                                 )}
+                                                {isSelfTransfer && (
+                                                    <div className="text-xs text-yellow-400 px-2">
+                                                        Cannot send to yourself
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -452,7 +464,7 @@ export function SendTokenDialog({
                                     }}
                                     disabled={
                                         (currentStep === 2 &&
-                                            (!recipientAddress || !amount || insufficient)) ||
+                                            (!recipientAddress || !amount || insufficient || isSelfTransfer)) ||
                                         isSending ||
                                         sendSuccess
                                     }
